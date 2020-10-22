@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Fly to a location based on scroll position</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+
+</head>
+<body>
+<style>
+    #map {
+        position: fixed;
+        width: 66%;
+    }
+    #features {
+        width: 34%;
+        margin-left: 66%;
+        font-family: sans-serif;
+        overflow-y: scroll;
+        background-color: #fafafa;
+    }
+    section {
+        padding: 25px 50px;
+        line-height: 25px;
+        border-bottom: 1px solid #ddd;
+        opacity: 0.25;
+        font-size: 13px;
+    }
+    section.active {
+        opacity: 1;
+    }
+    section:last-child {
+        border-bottom: none;
+        margin-bottom: 500px;
+    }
+</style>
+
+<div id="map"></div>
+<div id="features">
+        <section id="start" class="active">
+                <h1>CHINATOWN SOUNDWALK 1 </h1>
+               <h3>This SoundWalk focuses on what is commonly thought of as “the heart of Chinatown” 
+                   and will take you past historical landmarks, parks, places of worship and the Manhattan 
+                   Detention Center. Chinatown is shaped by its geography – bisected by Canal Street, 
+                   the main thoroughfare between the Holland Tunnel and the Manhattan Bridge, squeezed up 
+                   against civic and federal buildings in Tribeca, and bound by the East River on its 
+                   eastern flank. </h3>
+            </section>
+    <section id="baker" class="">
+        <h3>Canal Street Subway Station, street level (N/R/Q/6)</h3>
+        <p>
+            Welcome to Chinatown and its main thoroughfare, Canal Street. Take a deep breath and listen. Do you hear the squeal of the train brakes as it approaches? Many Chinese immigrants travel between the large Chinese enclave in Sunset Park and Chinatown for work, shopping and services. NYC visitors and residents also visit Chinatown for its large array of stores and restaurants. Listen to the voices of the street vendors as they try to attract the attention of people walking past. You will also no doubt hear traffic. As the main artery between the Holland Tunnel and the untolled Manhattan Bridge, Canal St is perpetually traffic-clogged, especially with trucks. 
+        </p>
+    </section>
+    <section id="aldgate">
+        <h3>Chung Pak LDC (96 Baxter Street)</h3>
+        <p>
+            Chung Pak provides 88 affordable apartment units to very low and extremely low-income seniors, who are aged between 85 and 100 years. Situated on floors 3 through 12, there is a 1-year waiting list for applicants. The building also houses a health clinic, childcare center, and retail stores offering essential services to the Chinatown community. At this spot, you may hear the chatter of long-time residents in Taishanese (a variant of Cantonese). </p>
+    </section>
+    <section id="london-bridge">
+        <h3>Manhattan Detention Center (MDC)</h3>
+        <p>
+            You’re looking at the North Tower of the Manhattan Detention Center. The Manhattan Detention Center is a municipal jail and part of the Manhattan Detention Complex, also informally known as The Tombs. The city plans to tear down the existing jail and rebuild a new, 40-story jail – a process that could take up to 8 years. Since the jail also shares a wall with the Chung Pak senior residence next door, the demolition and construction could expose residents at Chung Pak and the rest of Chinatown to air and noise pollution and reshape the physical environment. Can you imagine the sounds of constant construction at this site for years? 
+        </p>
+    </section>
+    <section id="woolwich">
+        <h3>70 Mulberry/62 Mulberry. </h3>
+        <p>
+            Walk to the corner of Mulberry Street and Bayard Street. You will see the burned shell of the former PS23 building at 70 Mulberry, which was home to many local community-based organizations. Before the fire, one used to hear the drums of a lion dance troupe and music from an innovative Asian-American modern dance company. Up the street at 62 Mulberry, the current brick parking garage will be replaced with a 13-storey hotel. With three major concurrent major construction projects in such a small area over the next few years, community stakeholders are concerned about the level of noise, air pollution, and impact to traffic patterns and small businesses.  
+        </p>
+    </section>
+    <section id="gloucester">
+        <h3>Columbus Park</h3>
+        <p>
+            Columbus Park opened in 1897 and was laid out by architect and landscape designer Calvart Vaux, who also co-designed New York City’s Central Park. Today, Columbus Park is affectionately known as Chinatown’s Living Room. You may hear the low murmurs of seniors socializing, playing cards and listening to traditional music, as well as local youths playing soccer and children running around the playground.  
+        </p>
+    </section>
+    <section id="caulfield-gardens">
+        <h3>Mosco and Mulberry Streets</h3>
+        <p>
+            To kids who grew up in the neighborhood, Mosco Street was known as Suicide Hill because boys regularly risked their lives joyriding down the middle of the street on roller skates or box scooters. Around the corner, Mulberry Street has become dedicated to the provision of funeral services. You may hear the somber sounds of a funeral procession or vans making flower deliveries for final rites.  
+        </p>
+    </section>
+    <section id="telegraph">
+        <h3>Church of the Transfiguration (29 Mott St)</h3>
+        <p>
+            Built in 1801, today this Roman Catholic parish serves a mostly Chinese congregation. The church is connected to an elementary school on Mott Street, which is operated by the Maryknoll order. Enter the church – you may hear Masses being conducted in three languages: Cantonese, Mandarin, and English. 
+        </p>
+    </section>
+    <section id="charing-cross">
+        <h3>Doyers Street. </h3>
+        <p>
+            This tiny, one block long street has a storied past – both as a cultural meeting point for Chinatown residents as well as a place where gang violence often erupted in the 1880s - more people have died violently at the angled bend than at any other street intersection in the US. Doyers is also home to Manhattan’s oldest dim sum restaurant – Nom Wah Tea Parlor. Listen out for the sounds of the old cash register and the plates delivering Nom Wah’s made-to-order dishes.  
+        </p>
+    </section>
+    <section id="canal-arcade">
+        <h3>Canal Arcade (46-48 Bowery).</h3>
+        <p>
+            Walk north on Bowery and keep an eye out for a tunnel entrance next to Joe’s Shanghai. The tunnel was carved out of the plot left behind by the old Bowery Theater, which burned down in 1929. Walk through to Elizabeth St and you will hear diners at New Malaysian restaurant and people ringing the doorbell to enter the hidden Japanese sushi bar, Nakaji.          </p>
+    </section>
+    <section id="mahayana-temple">
+        <h3>Mahayana Buddhist Temple (133 Canal St)</h3>
+        <p>
+            This temple is home to NYC’s tallest Buddha statue. It is open to the public and for a dollar, you can also choose your fortune. Enter the peaceful realm of the temple to escape the cacophony of Manhattan Bridge traffic. You may hear calming Buddhist chants and an occasional gong as you wander respectfully around the cavernous space.          </p>
+    </section>
+</div>
+<script>
+	// TO MAKE THE MAP APPEAR YOU MUST
+	// ADD YOUR ACCESS TOKEN FROM
+	// https://account.mapbox.com
+	mapboxgl.accessToken = 'pk.eyJ1IjoiY2hsb2V6cWwiLCJhIjoiY2tnaTlhb2FiMGl4djMzcDJkcWI0dTRnMyJ9.AVrOI0SrapDtFs7By6QuTA';
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-73.999536,40.716037],
+        zoom: 14,
+        bearing: 27,
+        pitch: 45
+    });
+
+
+    function handleKitten(e) {
+        markerel.style.backgroundColor = 'red';
+   e.stopPropagation();
+ }
+
+ function handleMapClick(e) {
+   console.log('handleMapClick', e);
+ }
+    
+ /*   
+    var el = document.createElement('div');
+ el.style.backgroundImage = 'url(https://placekitten.com/g/40/40/)';
+ el.style.width = 40 + 'px';
+ el.style.height = 40 + 'px';
+
+ new mapboxgl.Marker(el)
+   .setLngLat([ -73.999536,40.716037])
+   .addTo(map);
+
+ el.addEventListener('click', handleKitten, false);
+ map.on('click', handleMapClick);
+*/
+
+
+
+    var markerel = document.createElement('div');
+    //markerel.style.backgroundImage = 'url(https://placekitten.com/g/40/40/)';
+    markerel.style.width = 40 + 'px';
+ markerel.style.height = 40 + 'px';
+    markerel.style.backgroundColor = 'purple';
+    
+    var marker = new mapboxgl.Marker({color:"purple"})
+    .setLngLat([ -74.005166,40.720746])
+    .addTo(map);
+
+    //markerel.addEventListener('click', handleKitten, false);
+
+    var marker2 = new mapboxgl.Marker({color:"purple"})
+    .setLngLat([  -73.999768,40.717287])
+    .addTo(map);
+    var marker3 = new mapboxgl.Marker({color:"purple"})
+    .setLngLat([  -73.999962,40.716807])
+    .addTo(map);
+
+
+    var marker4 = new mapboxgl.Marker({color:"purple"})
+    .setLngLat([ -73.999327,40.715636])
+    .addTo(map);
+
+    var marker5 = new mapboxgl.Marker({color:"purple"})
+    .setLngLat([ -74.000053,40.715595])
+    .addTo(map);
+    var marker6 = new mapboxgl.Marker({color:"purple"})
+    .setLngLat([ -73.999600,40.714534])
+    .addTo(map);
+    var marker7 = new mapboxgl.Marker({color:"purple"})
+    .setLngLat([ -73.998965,40.714654])
+    .addTo(map);
+
+
+
+
+    var chapters = {
+        'start': {
+            bearing: 27,
+            center: [-73.997536,40.716037],
+            zoom: 15,
+            pitch: 20
+        },
+        'baker': {
+            bearing: 27,
+            center: [ -74.005166,40.720746],
+            zoom: 16,
+            pitch: 20
+        },
+        'aldgate': {
+            duration: 6000,
+            center: [ -73.999768,40.717287],
+            bearing: 150,
+            zoom: 17,
+            pitch: 0
+        },
+        'london-bridge': {
+            bearing: 90,
+            center: [ -73.999962,40.716807],
+            zoom: 17,
+            speed: 0.6,
+            pitch: 40
+        },
+        'woolwich': {
+            bearing: 90,
+            center: [ -73.999327,40.715636],
+            zoom: 17
+        },
+        'gloucester': {
+            bearing: 45,
+            center: [ -74.000053,40.715595],
+            zoom: 17,
+            pitch: 20,
+            speed: 0.5
+        },
+        'caulfield-gardens': {
+            bearing: 180,
+            center: [-73.999600,40.714534],
+            zoom: 17
+        },
+        'telegraph': {
+            bearing: 90,
+            center: [ -73.998965,40.714654],
+            zoom: 17.3,
+            pitch: 40
+        },
+        'charing-cross': {
+            bearing: 90,
+            center: [-73.997945,40.714452 ],
+            zoom: 17,
+            pitch: 20
+        },
+        'canal-arcade': {
+            bearing: 90,
+            center: [ -73.996929,40.715870],
+            zoom: 17,
+            pitch: 20
+        },'mahayana-temple': {
+            bearing: 90,
+            center: [-73.995412,40.716239],
+            zoom: 17,
+            pitch: 20
+        }
+    };
+
+    var marker8= new mapboxgl.Marker({color:"purple"})
+    .setLngLat([ -73.997945,40.714452])
+    .addTo(map);
+    var marker9= new mapboxgl.Marker({color:"purple"})
+    .setLngLat([-73.996929,40.715870])
+    .addTo(map);
+    var marker10= new mapboxgl.Marker({color:"purple"})
+    .setLngLat([-73.995412,40.716239])
+    .addTo(map);
+
+
+    // On every scroll event, check which element is on screen
+    window.onscroll = function () {
+        var chapterNames = Object.keys(chapters);
+        for (var i = 0; i < chapterNames.length; i++) {
+            var chapterName = chapterNames[i];
+            if (isElementOnScreen(chapterName)) {
+                setActiveChapter(chapterName);
+                break;
+            }
+        }
+    };
+
+    var activeChapterName = 'start';
+    
+    function setMarkerColor(marker, color) {
+    var $elem = jQuery(marker.getElement());
+    $elem.find('svg g[fill="' + marker._color + '"]').attr('fill', color);
+    marker._color = color;
+    }
+
+    function setActiveChapter(chapterName) {
+        
+        
+
+        
+        if(chapterName == 'baker'){
+           setMarkerColor(marker,'red');
+        }else{
+            setMarkerColor(marker,'purple');
+        }
+        if(chapterName == 'aldgate'){
+           setMarkerColor(marker2,'red');
+        }else{
+            setMarkerColor(marker2,'purple');
+        }
+
+        if(chapterName == 'london-bridge'){
+           setMarkerColor(marker3,'red');
+        }else{
+            setMarkerColor(marker3,'purple');
+        }
+
+        if(chapterName == 'woolwich'){
+           setMarkerColor(marker4,'red');
+        }else{
+            setMarkerColor(marker4,'purple');
+        }
+
+        if(chapterName == 'gloucester'){
+           setMarkerColor(marker5,'red');
+        }else{
+            setMarkerColor(marker5,'purple');
+        }
+//caulfield-gardens
+        if(chapterName == 'caulfield-gardens'){
+            setMarkerColor(marker6,'red');
+        }else{
+            setMarkerColor(marker6,'purple');
+        }
+        if(chapterName == 'telegraph'){
+            setMarkerColor(marker7,'red');
+        }else{
+            setMarkerColor(marker7,'purple');
+        }
+        if(chapterName == 'charing-cross'){
+            setMarkerColor(marker8,'red');
+        }else{
+            setMarkerColor(marker8,'purple');
+        }
+        if(chapterName == 'canal-arcade'){
+            setMarkerColor(marker9,'red');
+        }else{
+            setMarkerColor(marker9,'purple');
+        }
+        if(chapterName == 'mahayana-temple'){
+            setMarkerColor(marker10,'red');
+        }else{
+            setMarkerColor(marker10,'purple');
+        }
+
+        if (chapterName === activeChapterName) return;
+        map.flyTo(chapters[chapterName]);
+        document.getElementById(chapterName).setAttribute('class', 'active');
+        document.getElementById(activeChapterName).setAttribute('class', '');
+
+        activeChapterName = chapterName;
+        
+
+        
+
+        
+    }
+
+    function isElementOnScreen(id) {
+        var element = document.getElementById(id);
+        var bounds = element.getBoundingClientRect();
+        return bounds.top < window.innerHeight && bounds.bottom > 0;
+    }
+</script>
+
+</body>
+</html>
