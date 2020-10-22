@@ -18,11 +18,11 @@
 <style>
     #map {
         position: fixed;
-        width: 50%;
+        width: 66%;
     }
     #features {
-        width: 50%;
-        margin-left: 50%;
+        width: 34%;
+        margin-left: 66%;
         font-family: sans-serif;
         overflow-y: scroll;
         background-color: #fafafa;
@@ -46,8 +46,13 @@
 <div id="map"></div>
 <div id="features">
         <section id="start" class="active">
-                <h3>CHINATOWN SOUNDWALK 1 </h3>
-               <p>This SoundWalk focuses on what is commonly thought of as “the heart of Chinatown” and will take you past historical landmarks, parks, places of worship and the Manhattan Detention Center. Chinatown is shaped by its geography – bisected by Canal Street, the main thoroughfare between the Holland Tunnel and the Manhattan Bridge, squeezed up against civic and federal buildings in Tribeca, and bound by the East River on its eastern flank. </p>
+                <h1>CHINATOWN SOUNDWALK 1 </h1>
+               <h3>This SoundWalk focuses on what is commonly thought of as “the heart of Chinatown” 
+                   and will take you past historical landmarks, parks, places of worship and the Manhattan 
+                   Detention Center. Chinatown is shaped by its geography – bisected by Canal Street, 
+                   the main thoroughfare between the Holland Tunnel and the Manhattan Bridge, squeezed up 
+                   against civic and federal buildings in Tribeca, and bound by the East River on its 
+                   eastern flank. </h3>
             </section>
     <section id="baker" class="">
         <h3>Canal Street Subway Station, street level (N/R/Q/6)</h3>
@@ -115,33 +120,33 @@
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [ -74.005166,40.720746],
-        zoom: 15,
+        center: [-73.999536,40.716037],
+        zoom: 14,
         bearing: 27,
         pitch: 45
     });
-    var marker = new mapboxgl.Marker()
+    var marker = new mapboxgl.Marker({color:"purple"})
     .setLngLat([ -74.005166,40.720746])
     .addTo(map);
-    var marker2 = new mapboxgl.Marker()
+    var marker2 = new mapboxgl.Marker({color:"purple"})
     .setLngLat([  -73.999768,40.717287])
     .addTo(map);
-    var marker3 = new mapboxgl.Marker()
+    var marker3 = new mapboxgl.Marker({color:"purple"})
     .setLngLat([  -73.999962,40.716807])
     .addTo(map);
 
 
-    var marker4 = new mapboxgl.Marker()
+    var marker4 = new mapboxgl.Marker({color:"purple"})
     .setLngLat([ -73.999327,40.715636])
     .addTo(map);
 
-    var marker5 = new mapboxgl.Marker()
+    var marker5 = new mapboxgl.Marker({color:"purple"})
     .setLngLat([ -74.000053,40.715595])
     .addTo(map);
-    var marker6 = new mapboxgl.Marker()
+    var marker6 = new mapboxgl.Marker({color:"purple"})
     .setLngLat([ -73.999600,40.714534])
     .addTo(map);
-    var marker7 = new mapboxgl.Marker()
+    var marker7 = new mapboxgl.Marker({color:"purple"})
     .setLngLat([ -73.998965,40.714654])
     .addTo(map);
 
@@ -217,13 +222,13 @@
         }
     };
 
-    var marker8= new mapboxgl.Marker()
+    var marker8= new mapboxgl.Marker({color:"purple"})
     .setLngLat([ -73.997945,40.714452])
     .addTo(map);
-    var marker9= new mapboxgl.Marker()
+    var marker9= new mapboxgl.Marker({color:"purple"})
     .setLngLat([-73.996929,40.715870])
     .addTo(map);
-    var marker10= new mapboxgl.Marker()
+    var marker10= new mapboxgl.Marker({color:"purple"})
     .setLngLat([-73.995412,40.716239])
     .addTo(map);
 
